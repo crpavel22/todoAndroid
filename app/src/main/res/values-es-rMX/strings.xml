@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Lista de Tareas</string>
+    <string name="action_add">Añadir</string>
+    <string name="action_settings">Configuración</string>
+    <string name="animation_title">Velocidad de Animación</string>
+    <string name="cancel_button">Cancelar</string>
+    <string name="description_hint">Descripción</string>
+    <string name="idea_checkbox">Idea</string>
+    <string name="important_checkbox">Importante</string>
+    <string name="ok_button">OK</string>
+    <string name="rb_fast">Rapida</string>
+    <string name="rb_none">Ninguna</string>
+    <string name="rb_slow">Lenta</string>
+    <string name="settings_title">Ajustes</string>
+    <string name="sound_checkbox">Con o Sin</string>
+    <string name="sound_title">Sonidos</string>
+    <string name="title_hint">Titulo</string>
+    <string name="todo_checkbox">Tarea</string>
+
+</resources>
