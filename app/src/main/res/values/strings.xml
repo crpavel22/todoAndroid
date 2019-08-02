@@ -14,7 +14,7 @@
 
     <string name="sound_checkbox">On or Off</string>
     <string name="settings_title">Settings</string>
-    <string name="sound_title">Sound</string>
+    <string name="sound_title">Sound FX</string>
     <string name="animation_title">Animation Speed</string>
     <string name="rb_fast">Fast</string>
     <string name="rb_slow">Slow</string>

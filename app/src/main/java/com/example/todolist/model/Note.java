@@ -1,5 +1,12 @@
 package com.example.todolist.model;
 
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import static com.example.todolist.utils.Constants.TAG;
+
 public class Note {
 
     private String mTitle;
@@ -9,6 +16,37 @@ public class Note {
     private boolean mTodo;
     private boolean mImportant;
 
+    private static final String JSON_TITLE = "title";
+    private static final String JSON_DESCRIPTION = "description";
+    private static final String JSON_IDEA = "idea";
+    private static final String JSON_TODO = "todo";
+    private static final String JSON_IMPORTANT = "important";
+
+    public Note() {
+    }
+
+    public Note(JSONObject jo) throws JSONException {
+        mTitle = jo.getString(JSON_TITLE);
+        mDescription = jo.getString(JSON_DESCRIPTION);
+        mIdea = jo.getBoolean(JSON_IDEA);
+        mTodo = jo.getBoolean(JSON_TODO);
+        mImportant = jo.getBoolean(JSON_IMPORTANT);
+        Log.i(TAG, "Note: " + jo);
+    }
+
+    public JSONObject convertToJSON() throws JSONException {
+        JSONObject jo = new JSONObject();
+
+        jo.put(JSON_TITLE, mTitle);
+        jo.put(JSON_DESCRIPTION, mDescription);
+        jo.put(JSON_IMPORTANT, mImportant);
+        jo.put(JSON_IDEA, mIdea);
+        jo.put(JSON_TODO, mTodo);
+
+        Log.i(TAG, "convertToJSON: " + jo.toString());
+        return jo;
+
+    }
 
     public String getTitle() {
         return mTitle;

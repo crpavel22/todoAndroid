@@ -1,7 +1,10 @@
 package com.example.todolist;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +21,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.todolist.fragment.DialogNewNote;
 import com.example.todolist.fragment.DialogShowNote;
 import com.example.todolist.model.Note;
+import com.example.todolist.utils.Constants;
+import com.example.todolist.utils.JSONSerializer;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +34,17 @@ public class MainActivity extends AppCompatActivity {
 
     private NoteAdapter mNoteAdapter;
 
+    private Boolean mSound;
+    private Integer mAnimationOprions;
+    private SharedPreferences mSharedPreferences;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSharedPreferences = getSharedPreferences(Constants.SHARED_PREF_FILE_NAME, MODE_PRIVATE);
+        mSound = mSharedPreferences.getBoolean(Constants.SHARED_PREF_SOUND, Constants.DEFAULT_SOUND_OPTION);
+        mAnimationOprions = mSharedPreferences.getInt(Constants.SHARED_PREF_ANIMATION_SPEED, Constants.FAST);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
             dialog.show(getSupportFragmentManager(), "show_note");
 
+
         }));
+
     }
 
 
@@ -64,10 +85,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if (item.getItemId() == R.id.action_add) {
-            DialogNewNote dialog = new DialogNewNote();
+        switch (item.getItemId()) {
 
-            dialog.show(getSupportFragmentManager(), "note_create");
+            case R.id.action_add:
+                DialogNewNote dialog = new DialogNewNote();
+
+                dialog.show(getSupportFragmentManager(), "note_create");
+                break;
+
+            case R.id.action_settings:
+
+                Intent intent = new Intent(this, SettingsActivity.class);
+
+                startActivity(intent);
+
+                break;
         }
 
         return false;
@@ -82,9 +114,40 @@ public class MainActivity extends AppCompatActivity {
     //robodeindentidad.gov
 
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mNoteAdapter.saveNotes();
+    }
+
     public class NoteAdapter extends BaseAdapter {
 
+        private static final String TAG = "NoteAdapter";
         List<Note> noteList = new ArrayList<>();
+        private JSONSerializer mSerializer;
+
+        public NoteAdapter() {
+            mSerializer = new JSONSerializer(Constants.JSON_FILE_NAME, MainActivity.this.getApplicationContext());
+
+            try {
+                noteList = mSerializer.load();
+            } catch (JSONException e) {
+                Log.e(TAG, "NoteAdapter: there is an error at JSON file ", e);
+            } catch (IOException e) {
+                Log.e(TAG, "NoteAdapter: there is an error at work with file ", e);
+            }
+
+        }
+
+        public void saveNotes() {
+            try {
+                mSerializer.save(noteList);
+            } catch (JSONException e) {
+                Log.e(TAG, "NoteAdapter: there is an error at JSON file ", e);
+            } catch (IOException e) {
+                Log.e(TAG, "NoteAdapter: there is an error at JSON file ", e);
+            }
+        }
 
         @Override
         public int getCount() {

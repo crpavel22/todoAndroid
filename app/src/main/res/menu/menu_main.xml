@@ -9,6 +9,10 @@
         android:icon="@drawable/baseline_add_black_24"
         android:title="@string/action_add"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/settings_title"
+        app:showAsAction="never" />
 
 
 </menu>
